@@ -1,0 +1,25 @@
+{
+  "name": "pdfer-upload-imacros",
+  "version": "0.0.0",
+  "description": "Upload a pdfer document to the pdfer service using iMacros for Firefox and the PDFer web frontend",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nisaacson/pdfer-upload-imacros.git"
+  },
+  "keywords": [
+    "pdfer",
+    "imacros",
+    "docparse"
+  ],
+  "author": "Noah Isaacson",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "6a598832d5a3ba3f43b6e5ca46cfe71d5cf8935e"
+}
