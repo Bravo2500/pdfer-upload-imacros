@@ -70,7 +70,6 @@ function getUploadedData(cb) {
       clearInterval(iv);
       return cb('document failed to parse within alloted time')
     }
-
     iimPlay('CODE: REFRESH');
   }, 4000);
 }
