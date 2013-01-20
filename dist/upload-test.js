@@ -3966,75 +3966,6 @@ require.define("/node_modules/imacros-read-file/index.js",function(require,modul
 require.define("/package.json",function(require,module,exports,__dirname,__filename,process,global){module.exports = {"main":"index.js"}
 });
 
-require.define("/node_modules/pdfer-login-imacros/package.json",function(require,module,exports,__dirname,__filename,process,global){module.exports = {"main":"index.js"}
-});
-
-require.define("/node_modules/pdfer-login-imacros/index.js",function(require,module,exports,__dirname,__filename,process,global){/**
- * Login to pdfer website using iMacros for Firefox
- */
-module.exports = function(config, cb) {
-  // clear all existing cookies and sessions
-  iimPlay('CODE: CLEAR');
-  if (!config) {
-    return cb('"config" parameter missing');
-  }
-  var loginURL = 'http://'+config.pdfer.host + ':' + config.pdfer.port + '/login';
-  var code = iimPlay('CODE:URL GOTO='+loginURL);
-  if (code !==1) {
-    return cb('failed to login to pdfer service, imacros error: ' + iimGetLastError());
-  }
-  var atPage = atLoginPage();
-  if (!atPage) {
-    return cb('not at login page when we should be');
-  }
-  fillLogin(config, function (err, reply) {
-    if (err) { return cb(err); }
-    atPage = atUploadPage();
-    if (!atPage) {
-      return cb('pdfer login failed, not at upload page after submitting login');
-    }
-    cb();
-  });
-}
-
-function fillLogin(config, cb) {
-  var code = iimPlay('CODE: SET !TIMEOUT_TAG 0\n'
-                     + 'TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:NoFormName ATTR=ID:id_username CONTENT='+config.pdfer.username);
-  if (code !== 1) {
-    return cb('login failed, imacros error when filling in username field: ' + iimGetLastError());
-  }
-
-  code = iimPlay('CODE: SET !TIMEOUT_TAG 0\n'
-                 + 'TAG POS=1 TYPE=INPUT:PASSWORD FORM=NAME:NoFormName ATTR=ID:id_password CONTENT='+config.pdfer.password);
-  if (code !== 1) {
-    return cb('login failed, imacros error when filling in password field: ' + iimGetLastError());
-  }
-  code = iimPlay('CODE:SET !TIMEOUT_TAG 0\n'
-                 + 'TAG POS=1 TYPE=INPUT:SUBMIT FORM=NAME:NoFormName ATTR=*')
-  if (code !== 1) {
-    return cb('login failed, imacros error when pressing submit button on login page: ' + iimGetLastError());
-  }
-  cb();
-}
-function atLoginPage() {
-  var code = iimPlay('CODE: SET !TIMEOUT_TAG 0\n'
-                     + 'TAG POS=1 TYPE=LEGEND ATTR=TXT:Login');
-  if (code === 1) {
-    return true;
-  }
-  return false;
-}
-
-function atUploadPage() {
-  var code = iimPlay('CODE:SET !TIMEOUT_TAG 0\n'
-                     + 'TAG POS=1 TYPE=H1 ATTR=TXT:Upload<SP>PDF');
-  if (code === 1) {
-    return true;
-  }
-  return false;
-}
-});
-
 require.define("/index.js",function(require,module,exports,__dirname,__filename,process,global){/**
  * Login to pdfer website using iMacros for Firefox
  */
@@ -4165,6 +4096,75 @@ function atUploadPage() {
 }
 });
 
+require.define("/node_modules/pdfer-login-imacros/package.json",function(require,module,exports,__dirname,__filename,process,global){module.exports = {"main":"index.js"}
+});
+
+require.define("/node_modules/pdfer-login-imacros/index.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * Login to pdfer website using iMacros for Firefox
+ */
+module.exports = function(config, cb) {
+  // clear all existing cookies and sessions
+  iimPlay('CODE: CLEAR');
+  if (!config) {
+    return cb('"config" parameter missing');
+  }
+  var loginURL = 'http://'+config.pdfer.host + ':' + config.pdfer.port + '/login';
+  var code = iimPlay('CODE:URL GOTO='+loginURL);
+  if (code !==1) {
+    return cb('failed to login to pdfer service, imacros error: ' + iimGetLastError());
+  }
+  var atPage = atLoginPage();
+  if (!atPage) {
+    return cb('not at login page when we should be');
+  }
+  fillLogin(config, function (err, reply) {
+    if (err) { return cb(err); }
+    atPage = atUploadPage();
+    if (!atPage) {
+      return cb('pdfer login failed, not at upload page after submitting login');
+    }
+    cb();
+  });
+}
+
+function fillLogin(config, cb) {
+  var code = iimPlay('CODE: SET !TIMEOUT_TAG 0\n'
+                     + 'TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:NoFormName ATTR=ID:id_username CONTENT='+config.pdfer.username);
+  if (code !== 1) {
+    return cb('login failed, imacros error when filling in username field: ' + iimGetLastError());
+  }
+
+  code = iimPlay('CODE: SET !TIMEOUT_TAG 0\n'
+                 + 'TAG POS=1 TYPE=INPUT:PASSWORD FORM=NAME:NoFormName ATTR=ID:id_password CONTENT='+config.pdfer.password);
+  if (code !== 1) {
+    return cb('login failed, imacros error when filling in password field: ' + iimGetLastError());
+  }
+  code = iimPlay('CODE:SET !TIMEOUT_TAG 0\n'
+                 + 'TAG POS=1 TYPE=INPUT:SUBMIT FORM=NAME:NoFormName ATTR=*')
+  if (code !== 1) {
+    return cb('login failed, imacros error when pressing submit button on login page: ' + iimGetLastError());
+  }
+  cb();
+}
+function atLoginPage() {
+  var code = iimPlay('CODE: SET !TIMEOUT_TAG 0\n'
+                     + 'TAG POS=1 TYPE=LEGEND ATTR=TXT:Login');
+  if (code === 1) {
+    return true;
+  }
+  return false;
+}
+
+function atUploadPage() {
+  var code = iimPlay('CODE:SET !TIMEOUT_TAG 0\n'
+                     + 'TAG POS=1 TYPE=H1 ATTR=TXT:Upload<SP>PDF');
+  if (code === 1) {
+    return true;
+  }
+  return false;
+}
+});
+
 require.define("/test/upload-test.js",function(require,module,exports,__dirname,__filename,process,global){var should = require('should');
 var readFile = require('imacros-read-file');
 var upload = require('../index');
@@ -4192,10 +4192,8 @@ function runTests(cb) {
       }
       upload(data, function (err, responseData) {
         if (err) { return cb(err); }
-        alert('responseData: ' + JSON.stringify(responseData, null, ' '))
         responseData.should.have.property('text_pages');
         var pages = responseData.text_pages;
-        alert('pages length: ' + pages.length);
         pages.length.should.eql(2);
         cb();
       });
