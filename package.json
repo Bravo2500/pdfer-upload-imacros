@@ -21,5 +21,10 @@
   "author": "Noah Isaacson",
   "license": "BSD",
   "readmeFilename": "README.md",
-  "gitHead": "6a598832d5a3ba3f43b6e5ca46cfe71d5cf8935e"
+  "gitHead": "6a598832d5a3ba3f43b6e5ca46cfe71d5cf8935e",
+  "dependencies": {
+    "imacros-read-file": "0.0.0",
+    "should": "~1.2.1",
+    "pdfer-login-imacros": "0.0.0"
+  }
 }
