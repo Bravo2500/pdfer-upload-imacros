@@ -70,7 +70,14 @@ function getUploadedData(cb) {
       clearInterval(iv);
       return cb('document failed to parse within alloted time')
     }
-    iimPlay('CODE: REFRESH');
+    iimDisplay('complete header not found refreshing page');
+    var code = iimPlay('CODE: REFRESH');
+    if (code !== 1) {
+      var msg = 'error refreshing page: ' + iimGetLastError();
+      iimDisplay(msg);
+      clearInterval(iv);
+      return cb(msg);
+    }
   }, 4000);
 }
 
