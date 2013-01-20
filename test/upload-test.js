@@ -25,10 +25,8 @@ function runTests(cb) {
       }
       upload(data, function (err, responseData) {
         if (err) { return cb(err); }
-        alert('responseData: ' + JSON.stringify(responseData, null, ' '))
         responseData.should.have.property('text_pages');
         var pages = responseData.text_pages;
-        alert('pages length: ' + pages.length);
         pages.length.should.eql(2);
         cb();
       });
