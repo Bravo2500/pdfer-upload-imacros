@@ -73,11 +73,13 @@ function getUploadedData(callback) {
     },
     function (cb) {
       attempt++;
-      var complete = isComplete();
+      complete = isComplete();
       if (complete) {
+        iimDisplay('pdfer compete header FOUND!');
         getCompleteData(function (err, reply) {
           if (err) { return cb(err); }
           data = reply;
+          return cb();
         });
       }
       if (attempt > maxTries) {
@@ -94,6 +96,7 @@ function getUploadedData(callback) {
   },
     function (err) {
       if (err) { return callback(err); }
+      iimDisplay('pdfer extract complete');
       callback(null, data);
     }
   );
