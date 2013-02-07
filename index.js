@@ -1,6 +1,7 @@
 /**
  * Login to pdfer website using iMacros for Firefox
  */
+var async = require('async');
 module.exports = function(data, cb) {
   // clear all existing cookies and sessions
   if (!data) {
@@ -33,7 +34,7 @@ module.exports = function(data, cb) {
     }
   }
   uploadFile(data, cb);
-}
+};
 
 function uploadFile(data, cb) {
   var typeResult = setUploadType(data.type);
@@ -56,29 +57,46 @@ function uploadFile(data, cb) {
   });
 }
 
-function getUploadedData(cb) {
+function getUploadedData(callback) {
   var maxTries = 100;
   var attempt = 0;
-  var iv = setInterval(function() {
-    attempt++;
-    var complete = isComplete();
-    if (complete) {
-      clearInterval(iv);
-      getCompleteData(cb);
+  var complete = false;
+  var data;
+  async.until(
+    function () {
+      return complete;
+      // if (complete) { return complete; }
+      // if (attempt >= maxTries ) {
+      //   return true;
+      // }
+      // return false;
+    },
+    function (cb) {
+      attempt++;
+      var complete = isComplete();
+      if (complete) {
+        getCompleteData(function (err, reply) {
+          if (err) { return cb(err); }
+          data = reply;
+        });
+      }
+      if (attempt > maxTries) {
+        return cb('document failed to parse within alloted time');
+      }
+      iimDisplay('complete header not found refreshing page');
+      var code = iimPlay('CODE: REFRESH');
+      if (code !== 1) {
+        var msg = 'error refreshing page: ' + iimGetLastError();
+        return cb(msg);
+      }
+
+      setTimeout(cb, 2000);
+  },
+    function (err) {
+      if (err) { return callback(err); }
+      callback(null, data);
     }
-    if (attempt > maxTries) {
-      clearInterval(iv);
-      return cb('document failed to parse within alloted time')
-    }
-    iimDisplay('complete header not found refreshing page');
-    var code = iimPlay('CODE: REFRESH');
-    if (code !== 1) {
-      var msg = 'error refreshing page: ' + iimGetLastError();
-      iimDisplay(msg);
-      clearInterval(iv);
-      return cb(msg);
-    }
-  }, 4000);
+  );
 }
 
 function getCompleteData(cb) {
@@ -101,7 +119,7 @@ function isComplete() {
 }
 function setUploadType(type) {
   var code = iimPlay('CODE: SET !TIMEOUT_TAG 0\n'
-                     + 'TAG POS=1 TYPE=SELECT FORM=ACTION:# ATTR=NAME:type CONTENT=%'+type)
+                     + 'TAG POS=1 TYPE=SELECT FORM=ACTION:# ATTR=NAME:type CONTENT=%'+type);
   if (code !== 1) {
     return false;
   }

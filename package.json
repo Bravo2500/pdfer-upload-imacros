@@ -1,6 +1,6 @@
 {
   "name": "pdfer-upload-imacros",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Upload a pdfer document to the pdfer service using iMacros for Firefox and the PDFer web frontend",
   "main": "index.js",
   "directories": {
@@ -24,6 +24,7 @@
   "gitHead": "6a598832d5a3ba3f43b6e5ca46cfe71d5cf8935e",
   "dependencies": {
     "should": "~1.2.1",
-    "pdfer-login-imacros": "~1.0.0"
+    "pdfer-login-imacros": "~1.0.0",
+    "async": "~0.2.4"
   }
 }
