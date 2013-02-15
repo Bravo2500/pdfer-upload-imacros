@@ -75,7 +75,6 @@ function getUploadedData(callback) {
       attempt++;
       complete = isComplete();
       if (complete) {
-        iimDisplay('pdfer compete header FOUND!');
         getCompleteData(function (err, reply) {
           if (err) { return cb(err); }
           data = reply;
@@ -85,8 +84,7 @@ function getUploadedData(callback) {
       if (attempt > maxTries) {
         return cb('document failed to parse within alloted time');
       }
-      iimDisplay('complete header not found refreshing page');
-      var code = iimPlay('CODE: REFRESH');
+     var code = iimPlay('CODE: REFRESH');
       if (code !== 1) {
         var msg = 'error refreshing page: ' + iimGetLastError();
         return cb(msg);
@@ -96,7 +94,6 @@ function getUploadedData(callback) {
   },
     function (err) {
       if (err) { return callback(err); }
-      iimDisplay('pdfer extract complete');
       callback(null, data);
     }
   );
